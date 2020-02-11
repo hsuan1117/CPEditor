@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Page Title</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://cdn.ckeditor.com/4.13.1/full-all/ckeditor.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/ckeditor4-vue@0.1.0/dist/ckeditor.min.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/view-design/dist/styles/iview.css">
+		<script src="https://unpkg.com/view-design/dist/iview.min.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<ckeditor v-model="editorData" :config="editorConfig"></ckeditor>
+			<Modal v-model="guideVis" title="歡迎使用Cotpear內部編輯器">
+				<i-button to="https://www.cotpear.com" type="primary" target="_blank">我們的網站</Button>
+			</Modal>
+		</div>
+    <script>
+    CKEDITOR.plugins.add('insertMore', {
+	init: function(editor) {
+		editor.addCommand('insertMore', {
+			exec: function(editor) {
+				editor.insertHtml('<hr/><!-- more --><br/>');
+			}
+		});
+		editor.ui.addButton('More', {
+			label: '插入繼續閱讀',
+			command: 'insertMore',
+			toolbar: 'insert',
+			icon:"https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.7.3/plugins/pagebreak/icons/hidpi/pagebreak.png"
+		});
+	}
+})
+CKEDITOR.plugins.add('Guide', {
+	init: function(editor) {
+		editor.addCommand('guide', {
+			exec: function(editor) {
+				app.show()
+			}
+		});
+		editor.ui.addButton('Guide', {
+			label: '使用說明',
+			command: 'guide',
+			toolbar: 'about',
+			icon:"https://image.flaticon.com/icons/svg/906/906794.svg"
+		});
+	}
+})
+
+    </script>
+		<script>
+		Vue.use(CKEditor);
+		CKEDITOR.config.language = "zh"
+		const app = new Vue({
+			el: '#app',
+			data: {
+				editorData: '<h1>文章標題</h1>',
+				editorConfig: {
+					extraPlugins:"codesnippet,easyimage,insertMore,Guide",
+					removePlugins: 'image,flash,pagebreak,print,horizontalrule,save,open',
+					codeSnippet_languages : {
+						javascript: 'JavaScript',
+						php: 'PHP'
+					},
+					codeSnippet_theme : 'solarized_light',
+					language:"zh",
+					height:window.innerHeight*0.75
+				},
+				guideVis: false
+			},
+			methods: {
+				show: function () {
+			   	 this.guideVis = true;
+				}
+			}
+		});
+		</script>
+	</body>
+</html>
