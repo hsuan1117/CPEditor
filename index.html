@@ -55,7 +55,7 @@ CKEDITOR.plugins.add('Guide', {
 		const app = new Vue({
 			el: '#app',
 			data: {
-				editorData: '<h1>文章標題</h1>',
+				editorData: Cookies.get("_data"),
 				editorConfig: {
 					extraPlugins:"codesnippet,easyimage,insertMore,Guide",
 					removePlugins: 'image,flash,pagebreak,print,horizontalrule,save,open',
@@ -73,7 +73,12 @@ CKEDITOR.plugins.add('Guide', {
 				show: function () {
 			   	 this.guideVis = true;
 				}
-			}
+			},
+			watch: {
+			        editorData: function(value) {
+					Cookies.set("_data",value)
+				}
+			},
 		});
 		</script>
 	</body>
